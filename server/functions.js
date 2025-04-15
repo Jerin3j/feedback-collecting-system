@@ -25,7 +25,8 @@ async function getForms(req, res) {
   const limit = parseInt(req.query.limit) || 5;
   const skip = (page - 1) * limit;
   const order = req.query.order === 'asc' ? 'asc' : 'desc';
-
+  
+  
   try {
     const [feedbackList, totalCount] = await Promise.all([
       prisma.feedback.findMany({
@@ -35,6 +36,7 @@ async function getForms(req, res) {
       }),
       prisma.feedback.count(),
     ]);
+    console.log("Page:", page, "Skip:", skip, "Data:", feedbackList.length);
 
     res.json({ feedbacks: feedbackList, totalCount }); 
   } catch (error) {
