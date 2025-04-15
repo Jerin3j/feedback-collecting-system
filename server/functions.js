@@ -3,6 +3,7 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 async function handleSubmit(req, res) {
+  console.log("Form data", req.body)
   const { name, email, phone, rating, feedback } = req.body;
 
   try {
@@ -11,9 +12,11 @@ async function handleSubmit(req, res) {
          name, email, phone, rating, feedback 
         },
     });
+    console.log("Feedback data", feedbackData);
+
     res.status(201).json(feedbackData);
   } catch (error) {
-    res.status(500).json({ error: "Failed to create feedback" });
+    res.status(500).json({ error: "Failed to create feedback to db" });
   }
 }
 

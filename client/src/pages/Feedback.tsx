@@ -16,12 +16,21 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { toast } from "sonner";
+import { StarIcon } from "lucide-react";
 
 const formSchema = z.object({
-  username: z.string().min(2, { message: "Username must be at least 2 characters." }),
+  username: z
+    .string()
+    .min(2, { message: "Username must be at least 2 characters." }),
   phone: z.string().min(10, { message: "Phone must be at least 10 digits." }),
   email: z.string().email({ message: "Enter a valid email." }),
-  feedback: z.string().min(5, { message: "Feedback must be at least 5 characters." }),
+  rating: z
+    .number()
+    .min(1, { message: "Please provide a rating." })
+    .max(5, { message: "Rating can't be more than 5." }),
+  feedback: z
+    .string()
+    .min(5, { message: "Feedback must be at least 5 characters." }),
 });
 
 export const Feedback = () => {
@@ -33,6 +42,7 @@ export const Feedback = () => {
       username: "",
       phone: "",
       email: "",
+      rating: 0,
       feedback: "",
     },
   });
@@ -50,7 +60,7 @@ export const Feedback = () => {
           name: values.username,
           email: values.email,
           phone: values.phone,
-          rating: 5,
+          rating: values.rating,
           feedback: values.feedback,
         }),
       });
@@ -62,7 +72,7 @@ export const Feedback = () => {
         toast.success("Feedback submitted successfully!");
         form.reset();
       } else {
-        toast.error(data.error || "Failed to submit");
+        toast.error(data.error);
       }
     } catch (error) {
       toast.error("Something went wrong!");
@@ -75,7 +85,7 @@ export const Feedback = () => {
     <div className="h-screen w-full flex items-center  justify-center">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <Card className="w-[700px] h-80">
+          <Card className="w-[700px] h-fit">
             <CardContent className="space-y-4 pt-6">
               {/* Username */}
               <FormField
@@ -124,6 +134,36 @@ export const Feedback = () => {
                   )}
                 />
               </div>
+
+              {/* Rating */}
+              <FormField
+                control={form.control}
+                name="rating"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Rating</FormLabel>
+                    <FormControl>
+                      <div className="flex gap-2">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <label key={star} className="cursor-pointer">
+                            <input
+                              type="radio"
+                              value={star}
+                              checked={field.value === star}
+                              onChange={() => field.onChange(star)}
+                              className="hidden"
+                            />
+                            <StarIcon
+                              className={`${star <= (field.value || 0) && "fill-yellow-400"}`}
+                           />
+                          </label>
+                        ))}
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
               {/* Feedback */}
               <FormField
