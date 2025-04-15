@@ -21,14 +21,26 @@ async function handleSubmit(req, res) {
 }
 
 async function getForms(req, res) {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 5;
+  const skip = (page - 1) * limit;
+  const order = req.query.order === 'asc' ? 'asc' : 'desc';
+
   try {
-    const feedbackList = await prisma.feedback.findMany({
-      orderBy: { createdAt: "desc" },
-    });
-    res.json(feedbackList);
+    const [feedbackList, totalCount] = await Promise.all([
+      prisma.feedback.findMany({
+        skip,
+        take: limit,
+        orderBy: { createdAt: order },
+      }),
+      prisma.feedback.count(),
+    ]);
+
+    res.json({ feedbacks: feedbackList, totalCount }); 
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch feedback" });
   }
 }
+
 
 module.exports = { handleSubmit, getForms };

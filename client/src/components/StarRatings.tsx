@@ -1,5 +1,4 @@
 import { Star } from 'lucide-react'
-import React from 'react'
 
 export const StarRatings = ({rating}: {rating: number}) => {
   return (
