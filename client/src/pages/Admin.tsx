@@ -19,6 +19,7 @@ import { StarRatings } from "@/components/StarRatings";
 import { Button } from "@/components/ui/button";
 
 interface FeedbackType {
+  id: string,
   name: string;
   email: string;
   phone: string;
@@ -77,7 +78,7 @@ export const Admin = () => {
         </TableHeader>
         <TableBody>
           {feedbacks.map((feedback: FeedbackType) => (
-            <TableRow key={feedback.name}>
+            <TableRow key={feedback.id}>
               <TableCell>{feedback.name}</TableCell>
               <TableCell>{feedback.phone}</TableCell>
               <TableCell>{feedback.email}</TableCell>
