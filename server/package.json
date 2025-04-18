@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "nodemon index.js",
     "generate": "prisma generate",
-    "build": "npm run generate",
-     "start": "node index.js"
+    "build": "npm install --production=false && npx prisma generate && npm run generate && tsc",
+    "start": "node index.js"
   },
   "author": "",
   "license": "ISC",
