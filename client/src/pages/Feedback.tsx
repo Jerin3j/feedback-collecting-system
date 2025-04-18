@@ -51,7 +51,7 @@ export const Feedback = () => {
     try {
       setLoading(true);
 
-      const res = await fetch("http://localhost:3001/submit", {
+      const res = await fetch("https://feedback-collecting-system.onrender.com/submit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

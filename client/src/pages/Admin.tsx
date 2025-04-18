@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Pagination,
   PaginationContent,
@@ -38,7 +38,7 @@ export const Admin = () => {
   useEffect(() => {
     const getForms = async () => {
       const res = await fetch(
-        `http://localhost:3001/admin?page=${page}&limit=${limit}&order=${sortOrder}`,
+        `https://feedback-collecting-system.onrender.com/admin?page=${page}&limit=${limit}&order=${sortOrder}`,
         {
           method: "GET",
         }
