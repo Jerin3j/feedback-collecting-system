@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "generate": "prisma generate",
+    "build": "npm run generate",
+     "start": "node index.js"
   },
   "author": "",
   "license": "ISC",

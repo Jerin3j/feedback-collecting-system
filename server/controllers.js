@@ -40,7 +40,7 @@ async function getForms(req, res) {
 
     res.json({ feedbacks: feedbackList, totalCount }); 
   } catch (error) {
-    res.status(500).json({ error: "Failed to fetch feedback" });
+    res.status(500).json({ error: "Failed to fetch feedback", details: error.message });
   }
 }
 
