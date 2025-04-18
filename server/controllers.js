@@ -1,15 +1,21 @@
 const { PrismaClient } = require("@prisma/client");
 
+
 const prisma = new PrismaClient();
+
+
+
+
+
 
 async function handleSubmit(req, res) {
   console.log("Form data", req.body)
-  const { name, email, phone, rating, feedback } = req.body;
+  const { name, gender, email, phone, rating, feedback } = req.body;
 
   try {
     const feedbackData = await prisma.feedback.create({
       data: {
-         name, email, phone, rating, feedback 
+         name, gender, email, phone, rating, feedback 
         },
     });
     console.log("Feedback data", feedbackData);

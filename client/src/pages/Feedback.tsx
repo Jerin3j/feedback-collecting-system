@@ -17,11 +17,22 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { toast } from "sonner";
 import { StarIcon } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+
+
 
 const formSchema = z.object({
   username: z
     .string()
     .min(2, { message: "Username must be at least 2 characters." }),
+
+  gender: z.enum(["Male", "Female"], { message: "Gender must select" }),
   phone: z.string().min(10, { message: "Phone must be at least 10 digits." }),
   email: z.string().email({ message: "Enter a valid email." }),
   rating: z
@@ -40,6 +51,7 @@ export const Feedback = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       username: "",
+      gender: "Male" as any,
       phone: "",
       email: "",
       rating: 0,
@@ -51,19 +63,23 @@ export const Feedback = () => {
     try {
       setLoading(true);
 
-      const res = await fetch("https://feedback-collecting-system.onrender.com/submit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: values.username,
-          email: values.email,
-          phone: values.phone,
-          rating: values.rating,
-          feedback: values.feedback,
-        }),
-      });
+      const res = await fetch(
+        "http://localhost:3001/submit",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: values.username,
+            gender: values.gender,
+            email: values.email,
+            phone: values.phone,
+            rating: values.rating,
+            feedback: values.feedback,
+          }),
+        }
+      );
 
       const data = await res.json();
       console.log(data);
@@ -99,6 +115,25 @@ export const Feedback = () => {
                     </FormControl>
                     <FormMessage />
                   </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="gender"
+                render={({ field }) => (
+                  <Select 
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  >
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Select Gender" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Male">Male</SelectItem>
+                      <SelectItem value="Female">Female</SelectItem>
+                    </SelectContent>
+                  </Select>
                 )}
               />
 
@@ -154,8 +189,10 @@ export const Feedback = () => {
                               className="hidden"
                             />
                             <StarIcon
-                              className={`${star <= (field.value || 0) && "fill-yellow-400"}`}
-                           />
+                              className={`${
+                                star <= (field.value || 0) && "fill-yellow-400"
+                              }`}
+                            />
                           </label>
                         ))}
                       </div>

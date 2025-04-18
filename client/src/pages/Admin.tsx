@@ -21,6 +21,7 @@ import { Button } from "@/components/ui/button";
 interface FeedbackType {
   id: string,
   name: string;
+  gender: any;
   email: string;
   phone: string;
   rating: number;
@@ -38,7 +39,7 @@ export const Admin = () => {
   useEffect(() => {
     const getForms = async () => {
       const res = await fetch(
-        `https://feedback-collecting-system.onrender.com/admin?page=${page}&limit=${limit}&order=${sortOrder}`,
+        `http://localhost:3001/admin?page=${page}&limit=${limit}&order=${sortOrder}`,
         {
           method: "GET",
         }
@@ -58,6 +59,7 @@ export const Admin = () => {
         <TableHeader>
           <TableRow>
             <TableHead>Name</TableHead>
+            <TableHead>Gender</TableHead>
             <TableHead>Phone Number</TableHead>
             <TableHead>Email</TableHead>
             <TableHead>Ratings</TableHead>
@@ -80,6 +82,7 @@ export const Admin = () => {
           {feedbacks.map((feedback: FeedbackType) => (
             <TableRow key={feedback.id}>
               <TableCell>{feedback.name}</TableCell>
+              <TableCell>{feedback.gender}</TableCell>
               <TableCell>{feedback.phone}</TableCell>
               <TableCell>{feedback.email}</TableCell>
               <TableCell>
