@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: feedback-collecting-system
+    runtime: node
+    buildCommand: npm run build
+    startCommand: npm start
+    nodeVersion: 18
+    envVars:
+      - key: DATABASE_URL
+        sync: false
